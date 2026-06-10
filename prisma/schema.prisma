@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String  @id @default(uuid())
+  role           Role    @default(User)
+  nombreCompleto String
+  email          String  @unique
+  password       String
+  createDate     String
+  active         Boolean
+  orders         Order[]
+}
+
+model Client {
+  id         String  @id @default(uuid())
+  nombre     String
+  apellido   String
+  email      String  @unique
+  telefono   String
+  createDate String
+  orders     Order[]
+}
+
+model Product {
+  id             String                 @id @default(uuid())
+  name           String
+  price          Float
+  image          String
+  size           ProductSize[]          @relation("ProductSize")
+  color          ProductColor[]         @relation("ProductColor")
+  description    String
+  featured       Boolean
+  categories     Category[]             @relation("ProductCategories")
+  features       ProductFeature[]       @relation("ProductFeatures")
+  specifications ProductSpecification[] @relation("ProductSpecifications")
+  images         Images[]               @relation("Images")
+  envioPrecio    Float?
+  descuento      Float?
+}
+
+model ProductOrder {
+  id            String         @id @default(uuid())
+  name          String
+  price         Float
+  image         String
+  size          String
+  color         String
+  description   String
+  featured      Boolean
+  category      String
+  orderProducts OrderProduct[]
+}
+
+model ProductColor {
+  id       String    @id @default(uuid())
+  name     String
+  code     String
+  products Product[] @relation("ProductColor")
+}
+
+model ProductSize {
+  id       String    @id @default(uuid())
+  name     String
+  price    Float
+  image    String
+  products Product[] @relation("ProductSize")
+}
+
+model ProductFeature {
+  id       String    @id @default(uuid())
+  name     String
+  products Product[] @relation("ProductFeatures")
+}
+
+model ProductSpecification {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  products    Product[] @relation("ProductSpecifications")
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String
+  img      String
+  products Product[] @relation("ProductCategories")
+}
+
+model Order {
+  id                String           @id @default(uuid())
+  createdAt         DateTime         @default(now())
+  state             StateOrder
+  paymentMethod     String
+  shippingAddress   ShippingAddress? @relation(fields: [shippingAddressId], references: [id])
+  paymentSummary    PaymentSummary?  @relation(fields: [paymentSummaryId], references: [id])
+  user              User?            @relation(fields: [userId], references: [id])
+  client            Client?          @relation(fields: [clientId], references: [id])
+  orderProducts     OrderProduct[]
+  status            String           @default("pendiente")
+  shippingAddressId String?
+  paymentSummaryId  String?
+  userId            String?
+  clientId          String?
+}
+
+model OrderProduct {
+  order     Order        @relation(fields: [orderId], references: [id])
+  product   ProductOrder @relation(fields: [productId], references: [id])
+  orderId   String
+  productId String
+  quantity  Int
+
+  @@id([orderId, productId])
+}
+
+model ShippingAddress {
+  id        String  @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  address   String
+  city      String
+  state     String
+  notes     String
+  orders    Order[]
+}
+
+model PaymentSummary {
+  id       String  @id @default(uuid())
+  subtotal Float
+  shipping Float
+  total    Float
+  orders   Order[]
+}
+
+model Images {
+  id       String    @id @default(uuid())
+  src      String
+  products Product[] @relation("Images")
+}
+
+enum Role {
+  Admin
+  User
+}
+
+enum StateOrder {
+  paid
+  pending
+  canceled
+}

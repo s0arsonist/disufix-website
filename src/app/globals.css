@@ -1,0 +1,202 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-300;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-black hover:bg-secondary-dark;
+  }
+
+  .btn-outline {
+    @apply border border-primary text-primary hover:bg-primary hover:text-white;
+  }
+
+  .btn-gradient {
+    @apply bg-gradient-brand text-white hover:shadow-lg transition-all;
+  }
+
+  .container-custom {
+    @apply container mx-auto px-4 md:px-6 lg:px-8;
+  }
+
+  .section {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg;
+  }
+
+  .card-hover {
+    @apply hover:shadow-xl transition-all duration-300;
+  }
+
+  .gradient-text {
+    @apply text-transparent bg-clip-text bg-gradient-brand;
+  }
+
+  .animate-on-scroll {
+    @apply opacity-0 transition-all duration-700;
+  }
+
+  .animate-on-scroll.animate {
+    @apply opacity-100;
+  }
+
+  .mobile-menu {
+    @apply fixed top-0 right-0 h-full w-0 bg-white shadow-xl z-50 overflow-hidden transition-all duration-300 ease-in-out;
+  }
+
+  .mobile-menu.open {
+    @apply w-4/5 sm:w-3/5 md:w-2/5;
+  }
+
+  .mobile-menu-overlay {
+    @apply fixed inset-0 bg-black/50 z-40 opacity-0 pointer-events-none transition-opacity duration-300;
+  }
+
+  .mobile-menu-overlay.open {
+    @apply opacity-100 pointer-events-auto;
+  }
+
+  .product-card {
+    @apply flex flex-col h-full transition-all duration-300 hover:translate-y-[-5px];
+  }
+
+  .product-image-container {
+    @apply relative overflow-hidden rounded-t-xl;
+  }
+
+  .product-image {
+    @apply transition-transform duration-500 hover:scale-110;
+  }
+
+  .product-badge {
+    @apply absolute top-3 right-3 bg-gradient-brand text-white text-xs font-bold uppercase px-2 py-1 rounded-full shadow-md;
+  }
+
+  .product-info {
+    @apply p-5 flex flex-col flex-grow;
+  }
+
+  .product-category {
+    @apply text-xs text-primary font-medium uppercase tracking-wider;
+  }
+
+  .product-title {
+    @apply font-bold text-lg mt-1 mb-2 line-clamp-2;
+  }
+
+  .product-description {
+    @apply text-black/70 text-sm mb-4 line-clamp-2 flex-grow;
+  }
+
+  .product-price {
+    @apply font-bold text-lg text-primary;
+  }
+
+  .product-actions {
+    @apply flex justify-between items-center mt-auto pt-3 border-t border-gray-100;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ef7d30;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d05e11;
+}
+
+/* Animation for page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 400ms, transform 400ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 400ms, transform 400ms;
+}
+
+/* Slide-in menu animation */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.slide-in {
+  animation: slideInRight 0.3s forwards;
+}
+
+.slide-out {
+  animation: slideOutRight 0.3s forwards;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .section {
+    @apply py-8 md:py-12;
+  }
+
+  h1 {
+    @apply text-3xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+}
